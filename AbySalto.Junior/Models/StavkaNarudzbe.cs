@@ -21,6 +21,6 @@ namespace AbySalto.Junior.Models
 
         // Navigacijsko svojstvo
         [JsonIgnore]
-        public Narudzba Narudzba { get; set; }
+        public Narudzba? Narudzba { get; set; }
     }
 }

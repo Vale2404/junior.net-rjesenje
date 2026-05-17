@@ -1,4 +1,5 @@
 ﻿using AbySalto.Junior.Infrastructure.Database;
+using AbySalto.Junior.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,9 +32,24 @@ namespace AbySalto.Junior.Controllers
             var narudzba = await _context.Narudzbe
                 .Include(n => n.Stavke)
                 .FirstOrDefaultAsync(n => n.Id == id);
-            if(narudzba == null)
+            if (narudzba == null)
                 return NotFound($"Narudzba s ID {id} nije pronadena.");
             return Ok(narudzba);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> KreirajNarudzbu([FromBody] Models.Narudzba novaNarudzba)
+        {
+            if (novaNarudzba == null)
+                return BadRequest("Narudzba ne moze biti prazna!");
+
+            novaNarudzba.DatumNarudzbe = DateTime.Now;
+            novaNarudzba.Status = StatusNarudzbe.NaCekanju;
+
+            _context.Narudzbe.Add(novaNarudzba);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(DohvatiNarudzbu), new { id = novaNarudzba.Id }, novaNarudzba);
         }
     }
 }
