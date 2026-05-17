@@ -51,5 +51,39 @@ namespace AbySalto.Junior.Controllers
 
             return CreatedAtAction(nameof(DohvatiNarudzbu), new { id = novaNarudzba.Id }, novaNarudzba);
         }
+
+        [HttpPut("{id}/status")]
+        public async Task<IActionResult> UpdateStatus(int id, [FromBody] StatusNarudzbe status)
+        {
+            var narudzba = await _context.Narudzbe
+                .FirstOrDefaultAsync(n => n.Id == id);
+
+            if (narudzba == null)
+                return NotFound($"Narudzba s ID {id} nije pronadena.");
+
+            narudzba.Status = status;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { poruka = "Status uspjesno azuriran.", noviStatus = status.ToString() });
+        }
+
+        [HttpGet("{id}/ukupno")]
+        public async Task<IActionResult> GetUkupno(int id)
+        {
+            var narudzba = await _context.Narudzbe
+                .Include(n => n.Stavke)
+                .FirstOrDefaultAsync(n => n.Id == id);
+
+            if (narudzba == null)
+                return NotFound($"Narudzba s ID {id} nije pronadena.");
+
+            return Ok(new
+            {
+                narudzba.Id,
+                narudzba.ImeKupca,
+                narudzba.UkupnaCijena,
+                narudzba.Valuta
+            });
+        }
     }
 }
