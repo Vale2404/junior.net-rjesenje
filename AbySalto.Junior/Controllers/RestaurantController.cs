@@ -24,5 +24,16 @@ namespace AbySalto.Junior.Controllers
 
             return Ok(narudzbe);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> DohvatiNarudzbu(int id)
+        {
+            var narudzba = await _context.Narudzbe
+                .Include(n => n.Stavke)
+                .FirstOrDefaultAsync(n => n.Id == id);
+            if(narudzba == null)
+                return NotFound($"Narudzba s ID {id} nije pronadena.");
+            return Ok(narudzba);
+        }
     }
 }
