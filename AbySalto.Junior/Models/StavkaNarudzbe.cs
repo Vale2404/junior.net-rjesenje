@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace AbySalto.Junior.Models
 {
     public class StavkaNarudzbe
@@ -18,6 +20,7 @@ namespace AbySalto.Junior.Models
         public int NarudzbaId { get; set; }
 
         // Navigacijsko svojstvo
+        [JsonIgnore]
         public Narudzba Narudzba { get; set; }
     }
 }
