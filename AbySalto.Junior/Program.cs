@@ -19,8 +19,10 @@ namespace AbySalto.Junior
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Restaurant", Version = "v1" });
             });
 
+
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(connectionString));
 
             var app = builder.Build();
 

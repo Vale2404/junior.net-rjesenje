@@ -1,14 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AbySalto.Junior.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AbySalto.Junior.Infrastructure.Database
 {
     public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
+        public DbSet<Narudzba> Narudzbe { get; set; }
+        public DbSet<StavkaNarudzbe> StavkeNarudzbe { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) { }
-
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
