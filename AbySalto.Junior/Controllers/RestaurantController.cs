@@ -17,11 +17,14 @@ namespace AbySalto.Junior.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> DohvatiSveNarudzbe()
+        public async Task<IActionResult> DohvatiSveNarudzbe([FromQuery] bool sortPoCijeni = false)
         {
             var narudzbe = await _context.Narudzbe
                 .Include(n => n.Stavke)
                 .ToListAsync();
+
+            if(sortPoCijeni)
+                narudzbe = narudzbe.OrderByDescending(n => n.UkupnaCijena).ToList();
 
             return Ok(narudzbe);
         }
