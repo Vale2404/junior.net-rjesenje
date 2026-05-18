@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace AbySalto.Junior.Models
@@ -8,7 +9,8 @@ namespace AbySalto.Junior.Models
         public int Id { get; set; }
 
         // Naziv artikla
-        public string Ime { get; set; }
+        [Required]
+        public string Ime { get; set; } = string.Empty;
 
         // Kolicina artikla u narudzbi
         public int Kolicina { get; set; }

@@ -35,7 +35,7 @@ namespace AbySalto.Junior.Controllers
             var narudzba = await _context.Narudzbe
                 .Include(n => n.Stavke)
                 .FirstOrDefaultAsync(n => n.Id == id);
-            if (narudzba == null)
+            if(narudzba == null)
                 return NotFound($"Narudzba s ID {id} nije pronadena.");
             return Ok(narudzba);
         }
@@ -43,7 +43,7 @@ namespace AbySalto.Junior.Controllers
         [HttpPost]
         public async Task<IActionResult> KreirajNarudzbu([FromBody] Models.Narudzba novaNarudzba)
         {
-            if (novaNarudzba == null)
+            if(novaNarudzba == null)
                 return BadRequest("Narudzba ne moze biti prazna!");
 
             novaNarudzba.DatumNarudzbe = DateTime.Now;
@@ -58,10 +58,13 @@ namespace AbySalto.Junior.Controllers
         [HttpPut("{id}/status")]
         public async Task<IActionResult> UpdateStatus(int id, [FromBody] StatusNarudzbe status)
         {
+            if(!Enum.IsDefined(typeof(StatusNarudzbe), status))
+                return BadRequest("Neispravan status narudzbe.");
+
             var narudzba = await _context.Narudzbe
                 .FirstOrDefaultAsync(n => n.Id == id);
 
-            if (narudzba == null)
+            if(narudzba == null)
                 return NotFound($"Narudzba s ID {id} nije pronadena.");
 
             narudzba.Status = status;
@@ -77,7 +80,7 @@ namespace AbySalto.Junior.Controllers
                 .Include(n => n.Stavke)
                 .FirstOrDefaultAsync(n => n.Id == id);
 
-            if (narudzba == null)
+            if(narudzba == null)
                 return NotFound($"Narudzba s ID {id} nije pronadena.");
 
             return Ok(new
